@@ -1,0 +1,19 @@
+{
+  "configurations": {
+    "<name>: Launch": {
+      "adapter": "debugpy",
+      "filetypes": [ "python" ],
+      "configuration": {
+        "name": "main.py: Launch",
+        "type": "python",
+        "request": "launch",
+        "cwd": "/home/yren/github/diffusion_models/DDPM_tutorial",
+        "python": "/home/yren/anaconda3/envs/torch/bin/python",
+        "stopOnEntry": true,
+        "console": "externalTerminal",
+        "debugOptions": [],
+        "program": "${cwd}/main.py"
+      }
+    }
+  }
+}
