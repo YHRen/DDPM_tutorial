@@ -4,6 +4,7 @@
 - [x] loss function
 - [x] extraction
 - [x] train loop
-- [ ] sample loop
+- [x] sample loop
 - [ ] slides
+- [ ] improves, moving average, cosinschedule
 

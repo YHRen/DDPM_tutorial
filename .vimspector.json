@@ -14,6 +14,22 @@
         "debugOptions": [],
         "program": "${cwd}/main.py"
       }
+    },
+    "<name>: Launch Infer": {
+      "adapter": "debugpy",
+      "filetypes": [ "python" ],
+      "configuration": {
+        "name": "main.py: Launch",
+        "type": "python",
+        "request": "launch",
+        "cwd": "/home/yren/github/yhren/DDPM_tutorial",
+        "python": "/home/yren/anaconda3/envs/lightning_edge/bin/python",
+        "stopOnEntry": true,
+        "console": "externalTerminal",
+        "debugOptions": [],
+        "program": "${cwd}/main.py",
+        "args": ["infer", "4"]
+      }
     }
   }
 }
