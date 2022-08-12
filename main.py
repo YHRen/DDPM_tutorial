@@ -18,7 +18,7 @@ cifar10_cfg = {"data": cifar10,
         "channels": 3,
         "img_sz": (3, 32, 32)}
 
-cfg = fashionmnist
+cfg = fmnist_cfg
 bsz = 256
 epc = 1000
 timesteps = 1000
