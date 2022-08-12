@@ -8,13 +8,6 @@ import torch
 from pathlib import Path
 
 
-# for x, y in dataloader:
-#     print(x.shape, y.shape)
-#     break
-
-
-
-
 ckpt_dir = Path("./checkpoints/")
 ckpt_dir.mkdir(exist_ok=True)
 
@@ -25,10 +18,12 @@ cifar10_cfg = {"data": cifar10,
         "channels": 3,
         "img_sz": (3, 32, 32)}
 
-cfg = cifar10_cfg
+cfg = fashionmnist
 bsz = 256
-epc = 10
+epc = 1000
 timesteps = 1000
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "train":
         dataloader = torch.utils.data.DataLoader(
@@ -66,6 +61,6 @@ if __name__ == "__main__":
             for j, im in enumerate(img):
                 if idx == 4:
                     print(idx, j, im)
-                with open(img_folder/f"t_{idx}_sample_{j}.png", "wb") as fp:
+                with open(img_folder/f"t_{idx:03}_sample_{j:03}.png", "wb") as fp:
                     im = reverse_transform(im)
                     im.save(fp)
