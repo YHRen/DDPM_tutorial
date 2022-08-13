@@ -16,6 +16,3 @@ reverse_transform = T.Compose([
     T.Lambda(lambda t: t.cpu().numpy().astype(np.uint8)),
     T.ToPILImage(),
     ])
-
-cifar10 = CIFAR10('./', train=True, transform=transform, download=True)
-fashionmnist = FashionMNIST('./', train=True, transform=transform, download=True)

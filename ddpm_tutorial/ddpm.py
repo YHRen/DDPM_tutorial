@@ -10,17 +10,14 @@ class DDPM(torch.nn.Module):
         self.img_sz = img_sz
         self.timesteps = timesteps
         beta = torch.linspace(
-                1000/timesteps*0.0001, 
-                1000/timesteps*0.02, 
+                1000/timesteps*0.0001,
+                1000/timesteps*0.02,
                 timesteps,
                 dtype=torch.float64)
         alpha = 1 - beta
         alpha_bar = torch.cumprod(alpha, dim=0)
-        # sqrt_alpha_bar = torch.sqrt(alpha_bar)
-        self.register_buffer("beta", beta.float()) 
-        # self.register_buffer("alpha", alpha.float())
+        self.register_buffer("beta", beta.float())
         self.register_buffer("alpha_bar", alpha_bar.float())
-        # self.register_buffer("sqrt_alpha_bar", sqrt_alpha_bar.float())
 
     def blurring(self, x0, t, noise):
         tmp = torch.gather(self.alpha_bar, dim=0, index=t).view(-1, *[1]*3)
