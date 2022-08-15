@@ -77,7 +77,7 @@ class DDPM_RUN():
         states = torch.load(CKPT_DIR/f"{self.dataset}_epc_{epoch}.pt")
         ddpm.load_state_dict(states)
         ddpm.cuda()
-        imgs = ddpm.deblur_loop(batch_size=sample_n)
+        imgs = ddpm.denoise_loop(batch_size=sample_n)
         IMG_DIR.mkdir(exist_ok=True)
         for idx, img in enumerate(imgs):
             for j, im in enumerate(img):

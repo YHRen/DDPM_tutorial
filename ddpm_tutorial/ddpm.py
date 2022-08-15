@@ -19,7 +19,7 @@ class DDPM(torch.nn.Module):
         self.register_buffer("beta", beta.float())
         self.register_buffer("alpha_bar", alpha_bar.float())
 
-    def blurring(self, x0, t, noise):
+    def add_noise(self, x0, t, noise):
         tmp = torch.gather(self.alpha_bar, dim=0, index=t).view(-1, *[1]*3)
         xt = torch.sqrt(tmp) * x0 + torch.sqrt(1-tmp)*noise
         return xt
@@ -29,13 +29,13 @@ class DDPM(torch.nn.Module):
         device = x0.device
         t = torch.randint(0, self.timesteps, (bsz,), dtype=torch.long, device=device)
         noise = torch.randn_like(x0).to(device)
-        xt = self.blurring(x0, t, noise)
+        xt = self.add_noise(x0, t, noise)
         pred = self.model(xt, t)
         loss = F.mse_loss(pred, noise)
         return loss
 
     @torch.no_grad()
-    def deblurring(self, x, t):
+    def denoise(self, x, t):
         beta = torch.gather(self.beta, dim=0, index=t).view(-1, *[1]*3)
         alpha_bar = torch.gather(self.alpha_bar, dim=0, index=t).view(-1, *[1]*3)
         coef = beta / torch.sqrt(1-alpha_bar)
@@ -49,7 +49,7 @@ class DDPM(torch.nn.Module):
         return ans
 
     @torch.no_grad()
-    def noiseless_deblurring(self, x, t):
+    def denoise_last_step(self, x, t):
         beta = torch.gather(self.beta, dim=0, index=t).view(-1, *[1]*3)
         alpha_bar = torch.gather(self.alpha_bar, dim=0, index=t).view(-1, *[1]*3)
         coef = beta / torch.sqrt(1-alpha_bar)
@@ -59,19 +59,19 @@ class DDPM(torch.nn.Module):
         return ans
 
     @torch.no_grad()
-    def deblur_loop(self, batch_size=16, record_step=50):
+    def denoise_loop(self, batch_size=16, record_step=50):
         device = self.beta.device
         imgs = []
         img = torch.randn(batch_size, *self.img_sz, device=device)
         imgs.append(img)
         for t in tqdm(range(self.timesteps-1, 0, -1)):
             bt = torch.full((batch_size,), t, device=device)
-            img = self.deblurring(img, bt)
+            img = self.denoise(img, bt)
             if t%record_step==0:
                 imgs.append(img)
 
         t = torch.full((batch_size,), 0, device=device)
-        img = self.noiseless_deblurring(img, t)
+        img = self.denoise_last_step(img, t)
         imgs.append(img)
         return imgs
 

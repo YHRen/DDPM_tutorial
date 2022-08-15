@@ -1,7 +1,14 @@
 # Barebone implementation of DDPM
 
-Simple Implementation of [DDPM](https://arxiv.org/abs/2006.11239). 
+A Barebone Implementation of [DDPM](https://arxiv.org/abs/2006.11239). 
 
+CIFAR10:
+
+![CIFAR10](./resources/cifar10.png)
+
+FashionMNIST:
+
+![FASHION](./resources/fashion.png)
 
 ## Usage
 
